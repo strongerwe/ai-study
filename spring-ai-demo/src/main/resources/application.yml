@@ -1,0 +1,12 @@
+server:
+  port: 8090
+spring:
+  application:
+    name: ai-demo
+  ai:
+    openai:
+      api-key: YOU-KEY
+      base-url: open-ai-url
+      chat:
+        options:
+          model: MODEL-NAME
