@@ -1,0 +1,15 @@
+server:
+  port: 9001
+  tomcat:
+    uri-encoding: UTF-8
+  servlet:
+    encoding:
+      force: true
+      enabled: true
+
+spring:
+  application:
+    name: ollama-ai-demo
+  ai:
+    ollama:
+      base-url: http://127.0.0.1:11434
