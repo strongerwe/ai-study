@@ -26,7 +26,7 @@
       height: 80vh;
     }
     .chat-header {
-      background-color: #007bff;
+      background-color: rgb(6, 174, 166);
       color: white;
       padding: 15px;
       text-align: center;
@@ -41,8 +41,12 @@
       display: flex;
       flex-direction: column;
     }
-    .chat-message {
+    .chat-message-container {
+      display: flex;
+      align-items: flex-start;
       margin-bottom: 15px;
+    }
+    .chat-message {
       max-width: 70%;
       padding: 10px;
       border-radius: 10px;
@@ -50,14 +54,14 @@
       word-wrap: break-word;
     }
     .chat-message.user {
-      background-color: #007bff;
+      background-color: rgb(6, 174, 166);
       color: white;
       align-self: flex-end;
       border-bottom-right-radius: 0;
       text-align: left;
     }
     .chat-message.ai {
-      background-color: #f1f1f1;
+      background-color: #ffffff;
       color: #333;
       align-self: flex-start;
       border-bottom-left-radius: 0;
@@ -76,7 +80,7 @@
       font-size: 16px;
     }
     .send-button {
-      background-color: #007bff;
+      background-color: rgb(6, 174, 166);
       color: white;
       border: none;
       padding: 15px 20px;
@@ -90,6 +94,17 @@
     .think {
       font-size: 12px;
       color: #888;
+    }
+    /* 头像样式 */
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+    .chat-message-container.user {
+      flex-direction: row-reverse;
     }
   </style>
   <!-- 引入 marked.js -->
@@ -124,17 +139,24 @@
     if (userMessage === '') return;
 
     // Display user message
+    const userMessageContainer = document.createElement('div');
+    userMessageContainer.className = 'chat-message-container user';
+    const userAvatar = document.createElement('img');
+    userAvatar.src = '/img/user.png'; // 用户头像路径
+    userAvatar.className = 'avatar';
     const userMessageElement = document.createElement('div');
     userMessageElement.className = 'chat-message user';
     userMessageElement.textContent = userMessage;
-    chatBody.appendChild(userMessageElement);
+    userMessageContainer.appendChild(userAvatar);
+    userMessageContainer.appendChild(userMessageElement);
+    chatBody.appendChild(userMessageContainer);
 
     // Clear input
     chatInput.value = '';
 
     // Send request to AI server
     try {
-      const response = await fetch('http://127.0.0.1:8090/ai/stream', {
+      const response = await fetch('/ai/stream', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -148,9 +170,16 @@
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder('utf-8');
-      let aiMessageElement = document.createElement('div');
+      const aiMessageContainer = document.createElement('div');
+      aiMessageContainer.className = 'chat-message-container ai';
+      const aiAvatar = document.createElement('img');
+      aiAvatar.src = '/img/ai.png'; // AI头像路径
+      aiAvatar.className = 'avatar';
+      const aiMessageElement = document.createElement('div');
       aiMessageElement.className = 'chat-message ai';
-      chatBody.appendChild(aiMessageElement);
+      aiMessageContainer.appendChild(aiAvatar);
+      aiMessageContainer.appendChild(aiMessageElement);
+      chatBody.appendChild(aiMessageContainer);
 
       let aiMessageContent = '';
 

@@ -1,4 +1,4 @@
-package cn.stronger.we.ai.web;
+package cn.stronger.we.web;
 
 
 import org.springframework.stereotype.Controller;
