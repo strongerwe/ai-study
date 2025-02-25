@@ -26,7 +26,7 @@ public class OllamaConfig {
     public OllamaChatClient ollamaChatClient() {
         OllamaApi ollamaApi = new OllamaApi();
         OllamaOptions options = new OllamaOptions();
-        options.setModel("deepseek-r1:1.5b");
-        return new OllamaChatClient(ollamaApi).withDefaultOptions(options);
+        options.setModel(localModel);
+        return new OllamaChatClient(ollamaApi, options);
     }
 }
