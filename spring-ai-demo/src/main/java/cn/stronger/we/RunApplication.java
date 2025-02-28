@@ -1,6 +1,6 @@
 package cn.stronger.we;
 
-
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date 2025/2/24
  * @desc do what?
  */
+@MapperScan("cn.stronger.we.mapper")
 @SpringBootApplication
 public class RunApplication {
     public static void main(String[] args) {

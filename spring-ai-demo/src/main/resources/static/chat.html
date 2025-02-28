@@ -1,214 +1,239 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI 对话</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      background-color: #f0f2f5;
-    }
-    .chat-container {
-      width: 100%;
-      max-width: 600px;
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      height: 80vh;
-    }
-    .chat-header {
-      background-color: rgb(6, 174, 166);
-      color: white;
-      padding: 15px;
-      text-align: center;
-      font-size: 20px;
-      font-weight: bold;
-    }
-    .chat-body {
-      flex: 1;
-      padding: 20px;
-      overflow-y: auto;
-      background-color: #e9ecef;
-      display: flex;
-      flex-direction: column;
-    }
-    .chat-message-container {
-      display: flex;
-      align-items: flex-start;
-      margin-bottom: 15px;
-    }
-    .chat-message {
-      max-width: 70%;
-      padding: 10px;
-      border-radius: 10px;
-      position: relative;
-      word-wrap: break-word;
-    }
-    .chat-message.user {
-      background-color: rgb(6, 174, 166);
-      color: white;
-      align-self: flex-end;
-      border-bottom-right-radius: 0;
-      text-align: left;
-    }
-    .chat-message.ai {
-      background-color: #ffffff;
-      color: #333;
-      align-self: flex-start;
-      border-bottom-left-radius: 0;
-      text-align: left;
-    }
-    .chat-footer {
-      display: flex;
-      border-top: 1px solid #ddd;
-      background-color: #fff;
-    }
-    .chat-input {
-      flex: 1;
-      padding: 15px;
-      border: none;
-      outline: none;
-      font-size: 16px;
-    }
-    .send-button {
-      background-color: rgb(6, 174, 166);
-      color: white;
-      border: none;
-      padding: 15px 20px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    .send-button:hover {
-      background-color: #0056b3;
-    }
-    /* 样式 for <think> 标签 */
-    .think {
-      font-size: 12px;
-      color: #888;
-    }
-    /* 头像样式 */
-    .avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      margin-left: 10px;
-      margin-right: 10px;
-    }
-    .chat-message-container.user {
-      flex-direction: row-reverse;
-    }
-  </style>
-  <!-- 引入 marked.js -->
-  <script src="/js/marked.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepSeek AI助手</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 600px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 80vh;
+        }
+
+        .chat-header {
+            background-color: rgb(6, 174, 166);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .chat-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #e9ecef;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-message-container {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .chat-message {
+            max-width: 70%;
+            padding: 10px;
+            border-radius: 10px;
+            position: relative;
+            word-wrap: break-word;
+        }
+
+        .chat-message.user {
+            background-color: rgb(6, 174, 166);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 0;
+            text-align: left;
+        }
+
+        .chat-message.ai {
+            background-color: #ffffff;
+            color: #333;
+            align-self: flex-start;
+            border-bottom-left-radius: 0;
+            text-align: left;
+        }
+
+        .chat-footer {
+            display: flex;
+            border-top: 1px solid #ddd;
+            background-color: #fff;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+        }
+
+        .send-button {
+            background-color: rgb(6, 174, 166);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .send-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* 样式 for <think> 标签 */
+        .think {
+            font-size: 12px;
+            color: #888;
+        }
+
+        /* 头像样式 */
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .chat-message-container.user {
+            flex-direction: row-reverse;
+        }
+    </style>
+    <!-- 引入 marked.js -->
+    <script src="/js/marked.min.js"></script>
 </head>
 <body>
 <div class="chat-container">
-  <div class="chat-header">AI 对话</div>
-  <div class="chat-body" id="chatBody">
-    <!-- Messages will appear here -->
-  </div>
-  <div class="chat-footer">
-    <input type="text" class="chat-input" id="chatInput" placeholder="输入消息...">
-    <button class="send-button" id="sendButton">发送</button>
-  </div>
+    <div class="chat-header">DeepSeek AI助手</div>
+    <div class="chat-body" id="chatBody">
+        <!-- Messages will appear here -->
+    </div>
+    <div class="chat-footer">
+        <input type="text" class="chat-input" id="chatInput" placeholder="输入消息...">
+        <button class="send-button" id="sendButton">发送</button>
+    </div>
 </div>
 
 <script>
-  const chatBody = document.getElementById('chatBody');
-  const chatInput = document.getElementById('chatInput');
-  const sendButton = document.getElementById('sendButton');
+    const chatBody = document.getElementById('chatBody');
+    const chatInput = document.getElementById('chatInput');
+    const sendButton = document.getElementById('sendButton');
 
-  sendButton.addEventListener('click', sendMessage);
-  chatInput.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-      sendMessage();
+    const queryString = window.location.search;
+    console.log(queryString); // 输出: "?name=John&age=30"
+
+    // 使用URLSearchParams解析查询字符串
+    const urlParams = new URLSearchParams(queryString);
+
+    // 获取特定参数
+    const userId = urlParams.get('userId');
+
+    console.log(userId); // 输出: "John"
+
+    sendButton.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
+    async function sendMessage() {
+        const userMessage = chatInput.value.trim();
+        if (userMessage === '') return;
+
+        // Display user message
+        const userMessageContainer = document.createElement('div');
+        userMessageContainer.className = 'chat-message-container user';
+        const userAvatar = document.createElement('img');
+        userAvatar.src = '/img/user.png'; // 用户头像路径
+        userAvatar.className = 'avatar';
+        const userMessageElement = document.createElement('div');
+        userMessageElement.className = 'chat-message user';
+        userMessageElement.textContent = userMessage;
+        userMessageContainer.appendChild(userAvatar);
+        userMessageContainer.appendChild(userMessageElement);
+        chatBody.appendChild(userMessageContainer);
+
+        // Clear input
+        chatInput.value = '';
+
+        // Send request to AI server
+        try {
+            const response = await fetch('/ai/stream', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({message: userMessage, userId: userId})
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder('utf-8');
+            const aiMessageContainer = document.createElement('div');
+            aiMessageContainer.className = 'chat-message-container ai';
+            const aiAvatar = document.createElement('img');
+            aiAvatar.src = '/img/ai.png'; // AI头像路径
+            aiAvatar.className = 'avatar';
+            const aiMessageElement = document.createElement('div');
+            aiMessageElement.className = 'chat-message ai';
+            aiMessageContainer.appendChild(aiAvatar);
+            aiMessageContainer.appendChild(aiMessageElement);
+            chatBody.appendChild(aiMessageContainer);
+
+            let aiMessageContent = '';
+
+            // Read the stream
+            while (true) {
+                const {done, value} = await reader.read();
+                if (done) break;
+                const chunk = decoder.decode(value, {stream: true});
+                aiMessageContent += chunk;
+
+                // Update AI message with Markdown
+                let formattedContent = marked.parse(aiMessageContent.replace(/<\/think>/g, '</think>\n'));
+
+                // Apply styles to <think> elements
+                formattedContent = formattedContent.replace(/<think>(.*?)<\/think>/g, '<span class="think">AI思考：$1</span>');
+
+                aiMessageElement.innerHTML = formattedContent;
+
+                // Scroll to the bottom
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }
+        } catch (error) {
+            //console.error('Error:', error);
+            const errorMessageElement = document.createElement('div');
+            errorMessageElement.className = 'chat-message ai';
+            errorMessageElement.textContent = 'AI: 出现错误，请稍后再试。';
+            chatBody.appendChild(errorMessageElement);
+        }
     }
-  });
-
-  async function sendMessage() {
-    const userMessage = chatInput.value.trim();
-    if (userMessage === '') return;
-
-    // Display user message
-    const userMessageContainer = document.createElement('div');
-    userMessageContainer.className = 'chat-message-container user';
-    const userAvatar = document.createElement('img');
-    userAvatar.src = '/img/user.png'; // 用户头像路径
-    userAvatar.className = 'avatar';
-    const userMessageElement = document.createElement('div');
-    userMessageElement.className = 'chat-message user';
-    userMessageElement.textContent = userMessage;
-    userMessageContainer.appendChild(userAvatar);
-    userMessageContainer.appendChild(userMessageElement);
-    chatBody.appendChild(userMessageContainer);
-
-    // Clear input
-    chatInput.value = '';
-
-    // Send request to AI server
-    try {
-      const response = await fetch('/ai/stream', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ message: userMessage })
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder('utf-8');
-      const aiMessageContainer = document.createElement('div');
-      aiMessageContainer.className = 'chat-message-container ai';
-      const aiAvatar = document.createElement('img');
-      aiAvatar.src = '/img/ai.png'; // AI头像路径
-      aiAvatar.className = 'avatar';
-      const aiMessageElement = document.createElement('div');
-      aiMessageElement.className = 'chat-message ai';
-      aiMessageContainer.appendChild(aiAvatar);
-      aiMessageContainer.appendChild(aiMessageElement);
-      chatBody.appendChild(aiMessageContainer);
-
-      let aiMessageContent = '';
-
-      // Read the stream
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        const chunk = decoder.decode(value, { stream: true });
-        aiMessageContent += chunk;
-
-        // Update AI message with Markdown
-        let formattedContent = marked.parse(aiMessageContent.replace(/<\/think>/g, '</think>\n'));
-
-        // Apply styles to <think> elements
-        formattedContent = formattedContent.replace(/<think>(.*?)<\/think>/g, '<span class="think">AI思考：$1</span>');
-
-        aiMessageElement.innerHTML = formattedContent;
-
-        // Scroll to the bottom
-        chatBody.scrollTop = chatBody.scrollHeight;
-      }
-    } catch (error) {
-      //console.error('Error:', error);
-      const errorMessageElement = document.createElement('div');
-      errorMessageElement.className = 'chat-message ai';
-      errorMessageElement.textContent = 'AI: 出现错误，请稍后再试。';
-      chatBody.appendChild(errorMessageElement);
-    }
-  }
 </script>
 </body>
 </html>

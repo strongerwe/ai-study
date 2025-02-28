@@ -3,10 +3,42 @@ server:
 spring:
   application:
     name: ai-demo
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${ai.mysql.username}
+    url: jdbc:mysql://${ai.mysql.host}:${ai.mysql.port}/github?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2B8
+    type: com.zaxxer.hikari.HikariDataSource
+    password: ${ai.mysql.password}
   ai:
     openai:
-      api-key: YOU-KEY
-      base-url: open-ai-url
+      api-key: sk-uvkuwjzchauwztpmtitkxxthprgqumtnwaaqmaigpcdjsxij
+      base-url: https://api.siliconflow.cn
       chat:
         options:
-          model: MODEL-NAME
+          model: deepseek-ai/DeepSeek-R1-Distill-Llama-8B
+  thymeleaf:
+    check-template-location: false
+    prefix: classpath:/static/
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: password
+      database: 0
+ai:
+  mysql:
+    host: localhost
+    port: 3306
+    username: root
+    password: password
+
+# mybatis-plus
+mybatis-plus:
+  mapper-locations: classpath*:mapper/*.xml
+  configuration:
+    #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    call-setters-on-nulls: true
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
